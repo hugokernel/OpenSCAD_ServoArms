@@ -3,7 +3,7 @@ $fn = 40;
 HOLDER_THICKNESS = 1;
 SCREW_DIAMETER = 2.5;
 
-ARM_COUNT = 1;
+// @Todo: add HOLDER_THICKNESS and SCREW_DIAMETER in Spline definition and eventually clear
 
 /**
  *  Head / Tooth parameters
