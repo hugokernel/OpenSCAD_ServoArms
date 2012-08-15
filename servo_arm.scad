@@ -44,9 +44,9 @@ module servo_head_tooth(length, width, height, thickness) {
 
 /**
  *  With PLA material, use clear at 0.3
- *  For ABS, use 0
+ *  For ABS, use 0.2
  */
-module servo_head(params, clear = 0) {
+module servo_head(params, clear = 0.2) {
 
     diameter = params[0];
     count = params[1];
