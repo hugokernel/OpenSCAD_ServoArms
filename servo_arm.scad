@@ -1,6 +1,6 @@
 $fn = 40;
 
-HOLDER_THICKNESS = 1;
+HOLDER_THICKNESS = 1.1;
 SCREW_DIAMETER = 2.5;
 
 // @Todo: add HOLDER_THICKNESS and SCREW_DIAMETER in Spline definition and eventually clear
@@ -91,7 +91,7 @@ module servo_arm(params, arms) {
      */
     module arm(length, width, head_height, thickness, hole_count = 1) {
 
-        screw_diameter = 1.6;
+        screw_diameter = 2;
 
         difference() {
             union() {
