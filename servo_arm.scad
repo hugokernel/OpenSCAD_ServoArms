@@ -26,9 +26,11 @@
 
 $fn = 40;
 
-SCREW_DIAMETER = 2.5;
-
-// @Todo: add SCREW_DIAMETER in Spline definition and eventually clear
+/**
+ *  Clear between arm head and servo head
+ *  With PLA material, use clear : 0.3, for ABS, use 0.2
+ */
+SERVO_HEAD_CLEAR = 0.2;
 
 /**
  *  Head / Tooth parameters
@@ -39,6 +41,7 @@ SCREW_DIAMETER = 2.5;
  *  0. Head external diameter
  *  1. Head heigth
  *  2. Head thickness
+ *  3. Head screw diameter
  *
  *  Second array (tooth related) :
  *  0. Tooth count
@@ -47,7 +50,8 @@ SCREW_DIAMETER = 2.5;
  *  3. Tooth width
  */
 FUTABA_3F_SPLINE = [
-    [5.92, 4, 1.1], [25, 0.3, 0.7, 0.1]
+    [5.92, 4, 1.1, 2.5],
+    [25, 0.3, 0.7, 0.1]
 ];
 
 module servo_futaba_3f(length, count) {
@@ -86,9 +90,9 @@ module servo_head_tooth(length, width, height, head_height) {
 }
 
 /**
- *  With PLA material, use clear : 0.3, for ABS, use 0.2
+ *  Servo head
  */
-module servo_head(params, clear = 0.2) {
+module servo_head(params, clear = SERVO_HEAD_CLEAR) {
 
     head = params[0];
     tooth = params[1];
@@ -127,6 +131,7 @@ module servo_arm(params, arms) {
     head_diameter = head[0];
     head_heigth = head[1];
     head_thickness = head[2];
+    head_screw_diameter = head[3];
 
     tooth_length = tooth[2];
     tooth_width = tooth[3];
@@ -140,7 +145,7 @@ module servo_arm(params, arms) {
      */
     module arm(tooth_length, tooth_width, head_height, head_heigth, hole_count = 1) {
 
-        screw_diameter = 2;
+        arm_screw_diameter = 2;
 
         difference() {
             union() {
@@ -177,11 +182,11 @@ module servo_arm(params, arms) {
             for (i = [0 : hole_count - 1]) {
                 //translate([0, length - (length / hole_count * i), -1]) {
                 translate([0, tooth_length - (4 * i), -1]) {
-                    cylinder(r = screw_diameter / 2, h = 10);
+                    cylinder(r = arm_screw_diameter / 2, h = 10);
                 }
             }
 
-            cylinder(r = SCREW_DIAMETER / 2, h = 10);
+            cylinder(r = head_screw_diameter / 2, h = 10);
         }
     }
 
@@ -190,7 +195,7 @@ module servo_arm(params, arms) {
             cylinder(r = head_diameter / 2 + head_thickness, h = head_heigth + 1);
         }
 
-        cylinder(r = SCREW_DIAMETER / 2, h = 10);
+        cylinder(r = head_screw_diameter / 2, h = 10);
 
         servo_head(params);
     }
