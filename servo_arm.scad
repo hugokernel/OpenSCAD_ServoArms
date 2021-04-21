@@ -98,21 +98,22 @@ module servo_head(params, clear = SERVO_HEAD_CLEAR) {
     tooth = params[1];
 
     head_diameter = head[0];
-    head_heigth = head[1];
+    head_height = head[1];
+    //head_heigth
 
     tooth_count = tooth[0];
     tooth_height = tooth[1];
     tooth_length = tooth[2];
     tooth_width = tooth[3];
 
-    % cylinder(r = head_diameter / 2, h = head_heigth + 1);
+    % cylinder(r = head_diameter / 2, h = head_height + 1);
 
-    cylinder(r = head_diameter / 2 - tooth_height + 0.03 + clear, h = head_heigth);
+    cylinder(r = head_diameter / 2 - tooth_height + 0.03 + clear, h = head_height);
 
     for (i = [0 : tooth_count]) {
         rotate([0, 0, i * (360 / tooth_count)]) {
             translate([0, head_diameter / 2 - tooth_height + clear, 0]) {
-                servo_head_tooth(tooth_length, tooth_width, tooth_height, head_heigth);
+                servo_head_tooth(tooth_length, tooth_width, tooth_height, head_height);
             }
         }
     }
@@ -129,7 +130,7 @@ module servo_arm(params, arms) {
     tooth = params[1];
 
     head_diameter = head[0];
-    head_heigth = head[1];
+    head_height = head[1];
     head_thickness = head[2];
     head_screw_diameter = head[3];
 
@@ -143,15 +144,14 @@ module servo_arm(params, arms) {
      *  Servo arm
      *  - length is from center to last hole
      */
-    module arm(tooth_length, tooth_width, head_height, head_heigth, hole_count = 1) {
-
+    module arm(tooth_length, tooth_width, reinforcement_height, head_height, hole_count = 1) {
         arm_screw_diameter = 2;
 
         difference() {
             union() {
-                cylinder(r = tooth_width / 2, h = head_heigth);
+                cylinder(r = tooth_width / 2, h = head_height);
 
-                linear_extrude(height = head_heigth) {
+                linear_extrude(height = head_height) {
                     polygon([
                         [-tooth_width / 2, 0], [-tooth_width / 3, tooth_length],
                         [tooth_width / 3, tooth_length], [tooth_width / 2, 0]
@@ -159,17 +159,17 @@ module servo_arm(params, arms) {
                 }
 
                 translate([0, tooth_length, 0]) {
-                    cylinder(r = tooth_width / 3, h = head_heigth);
+                    cylinder(r = tooth_width / 3, h = head_height);
                 }
 
                 if (tooth_length >= 12) {
-                    translate([-head_heigth / 2 + 2, 3.8, -4]) {
+                    translate([-head_height / 2 + 2, 3.8, -4]) {
                         rotate([90, 0, 0]) {
                             rotate([0, -90, 0]) {
-                                linear_extrude(height = head_heigth) {
+                                linear_extrude(height = head_height) {
                                     polygon([
-                                        [-tooth_length / 1.7, 4], [0, 4], [0, - head_height + 5],
-                                        [-2, - head_height + 5]
+                                        [-tooth_length / 1.7, 4], [0, 4], [0, - reinforcement_height + 5],
+                                        [-2, - reinforcement_height + 5]
                                     ]);
                                 }
                             }
@@ -192,7 +192,7 @@ module servo_arm(params, arms) {
 
     difference() {
         translate([0, 0, 0.1]) {
-            cylinder(r = head_diameter / 2 + head_thickness, h = head_heigth + 1);
+            cylinder(r = head_diameter / 2 + head_thickness, h = head_height + 1);
         }
 
         cylinder(r = head_screw_diameter / 2, h = 10);
@@ -203,10 +203,10 @@ module servo_arm(params, arms) {
     arm_thickness = head_thickness;
 
     // Arm
-    translate([0, 0, head_heigth]) {
+    translate([0, 0, head_height]) {
         for (i = [0 : arm_count - 1]) {
             rotate([0, 0, i * (360 / arm_count)]) {
-                arm(arm_length, head_diameter + arm_thickness * 2, head_heigth, 2);
+                arm(arm_length, head_diameter + arm_thickness * 2, head_height, 2);
             }
         }
     }
