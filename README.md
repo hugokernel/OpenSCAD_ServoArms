@@ -3,6 +3,8 @@ OpenSCAD_ServoArms
 
 Parametric servo arms generator with OpenSCAD
 
+![Examples](/examples.png)
+
 Easy to use :
 
 servo_standard(20, 4);
