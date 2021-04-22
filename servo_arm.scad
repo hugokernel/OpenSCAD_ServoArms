@@ -163,7 +163,7 @@ module servo_arm(params, arms) {
                 }
 
                 if (tooth_length >= 12) {
-                    translate([-head_height / 2 + 2, 3.8, -4]) {
+                    translate([-head_height / 2 + 2, head_diameter / 2 + head_thickness - 0.5, -4]) {
                         rotate([90, 0, 0]) {
                             rotate([0, -90, 0]) {
                                 linear_extrude(height = head_height) {
