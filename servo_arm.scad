@@ -195,7 +195,8 @@ module servo_arm(params, arms) {
             cylinder(r = head_diameter / 2 + head_thickness, h = head_height + 1);
         }
 
-        cylinder(r = head_screw_diameter / 2, h = 10);
+        translate([0, 0, 0.1])
+            cylinder(r = head_screw_diameter / 2, h = head_height + 1);
 
         servo_head(params);
     }
